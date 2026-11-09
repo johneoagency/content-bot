@@ -1,0 +1,42 @@
+services:
+  bot:
+    build: .
+    image: content-bot:latest
+    container_name: content-bot
+    restart: unless-stopped
+    env_file:
+      - ./secrets/.env
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./prompts:/app/prompts:ro
+      - bot_data:/app/data
+    # Graceful shutdown so an in-flight job is left in a safe, resumable state.
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "python", "-m", "app", "--check"]
+      interval: 60s
+      timeout: 20s
+      retries: 3
+      start_period: 20s
+
+  # Optional: self-hosted Local Bot API server for large files (download without
+  # the API size limit, upload up to 2000 MB). Enable with:
+  #   docker compose --profile localapi up -d
+  # Then set runtime.local_bot_api_base_url to http://telegram-bot-api:8081 in
+  # config.json. Requires TELEGRAM_API_ID / TELEGRAM_API_HASH from my.telegram.org.
+  telegram-bot-api:
+    image: aiogram/telegram-bot-api:latest
+    container_name: telegram-bot-api
+    profiles: ["localapi"]
+    restart: unless-stopped
+    environment:
+      TELEGRAM_API_ID: ${TELEGRAM_API_ID}
+      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH}
+      TELEGRAM_LOCAL: 1
+    volumes:
+      - bot_data:/var/lib/telegram-bot-api
+    expose:
+      - "8081"
+
+volumes:
+  bot_data:

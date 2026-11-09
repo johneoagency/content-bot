@@ -1,0 +1,71 @@
+{
+  "_comment": "Copy to config.json and edit. Secrets live in secrets/.env, NOT here. All IDs must be verified from Telegram, never guessed.",
+
+  "group_chat_id": 0,
+  "admin_user_ids": [],
+
+  "topics": {
+    "_comment": "message_thread_id of each forum topic. 0 or null means 'not set yet'. Discover with tools/discover_ids.py. The General topic has no thread id.",
+    "content_input": null,
+    "content_output": null,
+    "video_input": null,
+    "video_output": null,
+    "instagram_content": null,
+    "tech_log": null
+  },
+
+  "providers": {
+    "wavespeed_base_url": "https://api.wavespeed.ai",
+    "qwen_image_model": "wavespeed-ai/qwen-image-2.0-pro/edit",
+    "wan_video_model": "alibaba/wan-3.0/video-edit",
+    "vision_model_endpoint": "wavespeed-ai/any-llm/vision",
+    "vision_model": "openai/gpt-4o-mini",
+    "apify_actor": "intropix/instagram-posts-reels-scraper"
+  },
+
+  "reference": {
+    "_comment": "Set via the secure Tech Log flow or by dropping a file in secrets/reference/. These fields are metadata only.",
+    "image_path": null,
+    "image_hash": null,
+    "usage_rights_confirmed": false
+  },
+
+  "generation": {
+    "image_size_policy": "match_source",
+    "aspect_change_default": "padding",
+    "wan_resolution": "720p",
+    "wan_generate_audio": true,
+    "wan_prompt_expansion": false,
+    "video_trim_seconds": 15,
+    "default_seed": null
+  },
+
+  "prompt_variables": {
+    "_comment": "Agreed at setup. Drive the neutral prompt templates in prompts/.",
+    "subject_selection": "the single main foreground person",
+    "identity_mode": "identity_and_agreed_traits",
+    "clothing_source": "base",
+    "tattoos": "preserve",
+    "photo_style": "natural, realistic",
+    "caption_tone": "cute, sweet, girly lifestyle",
+    "caption_language": "English"
+  },
+
+  "limits": {
+    "image_workers": 1,
+    "preview_workers": 1,
+    "wan_workers": 3,
+    "max_upload_mb": 50,
+    "max_image_pixels": 50000000,
+    "min_disk_free_mb": 1000,
+    "test_budget_usd": 0,
+    "poll_interval_seconds": 5,
+    "poll_timeout_seconds": 1800
+  },
+
+  "runtime": {
+    "intake_mode": "long_polling",
+    "local_bot_api_base_url": null,
+    "config_version": "1"
+  }
+}

@@ -1,0 +1,5 @@
+# Pinned dependencies. Standard library covers SQLite, HTTP via urllib is
+# avoided in favor of httpx for timeouts/retries.
+httpx==0.27.2
+Pillow==10.4.0
+python-dotenv==1.0.1
